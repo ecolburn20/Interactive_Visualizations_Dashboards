@@ -50,20 +50,32 @@ function buildCharts(sample) {
     // @TODO: Build a Pie Chart
 
     //
-    var sorted_sample_values = 
-    response.sample_values.sort(function compareFunction(firstNum, secondNum) {
-     return secondNum - firstNum;
-   });
-   Object.entries(response).forEach(([key, value]) => {
-    console.log(`Key: ${key} and Value ${value}`)})
-   var top_sample_values = sorted_sample_values.slice(0, 10);
-   var top_otu_ids = response.otu_ids.slice(0,10);
-   console.log(top_sample_values)
+   
+   
+
+   var values_sorted=[];
+   for (j in response.sample_values){
+     values_sorted.push(response.sample_values[j]);
+   }
+   var sliced_values=values_sorted.sort(function(a, b){return b - a}).slice(0,10);
+   
+   var sliced_otu_ids=[];
+   var sliced_otu_labels=[];
+   for (i in sliced_values){
+     
+     for (x=0; x<response.sample_values.length;x++){
+       if (sliced_values[i]===response.sample_values[x]){
+         sliced_otu_ids.push(response.otu_ids[x]);
+         sliced_otu_labels.push(response.otu_labels[x]);
+       }
+     }
+   }
+
     var trace2 = {
       type: 'pie',
-      values: top_sample_values,
-      labels: top_otu_ids,
-      text: response.otu_labels,
+      values: sliced_values,
+      labels: sliced_otu_ids,
+      text: sliced_otu_labels,
       hoverinfo:'label+text+percent+values', 
       textinfo:'percent'
     }
@@ -71,11 +83,11 @@ function buildCharts(sample) {
     var data2 = [trace2]
     
     Plotly.react('pie', data2)
-  })
+  })}
     // HINT: You will need to use slice() to grab the top 10 sample_values,
     // otu_ids, and labels (10 each).
 
-}
+
 
 function init() {
   // Grab a reference to the dropdown select element
