@@ -90,7 +90,7 @@ def samples(sample):
     sample_data = df.loc[df[sample] > 1, ["otu_id", "otu_label", sample]]
     # Format the data to send as json
     data = {
-        "otu_ids": sample_data.otu_ids.tolist(),
+        "otu_ids": sample_data.otu_id.tolist(),
         "sample_values": sample_data[sample].values.tolist(),
         "otu_labels": sample_data.otu_label.tolist()
     }
